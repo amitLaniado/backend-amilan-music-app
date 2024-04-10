@@ -1,0 +1,18 @@
+Instead of temporary file:
+
+External Libraries for Streaming:
+
+Consider libraries like moviepy or pydub that can handle downloading and manipulating audio/video data directly.
+These libraries might provide more control over the downloaded data and potentially avoid saving temporary files.
+
+
+
+
+
+
+outtmpl:           Dictionary of templates for output names. Allowed keys
+                    are 'default' and the keys of OUTTMPL_TYPES (in utils/_utils.py).
+                    For compatibility with youtube-dl, a single string can also be used
+
+
+download function line 3547
