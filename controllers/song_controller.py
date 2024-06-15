@@ -2,14 +2,16 @@ from fastapi import APIRouter, Response
 # from fastapi.responses import StreamingResponse
 from services.download_song_service import fetch_download_song
 from services.song_options_service import fetch_song_options
+from typing import Optional 
 
 router = APIRouter(
     prefix="/song",
     tags=["song"],
 )
 
-@router.get("/download/{song_url}")
-async def handle_song(song_url):
+@router.get("/download")
+async def handle_song(song_url: Optional[str] = ''):
+    print("song_url: ", song_url)
     song_data = await fetch_download_song(song_url)
 
     if song_data:    
