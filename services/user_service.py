@@ -4,7 +4,7 @@ from models import UserRegister, UserLogin
 
 def arrange_register(user: UserRegister):
     user.password = hash_password(user.password)
-    register(user)
+    return register(user)
 
 def arrange_login(user: UserLogin):
     user.password = hash_password(user.password)

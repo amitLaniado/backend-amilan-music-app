@@ -16,18 +16,16 @@ router = APIRouter(
 @router.post("/register", status_code=status.HTTP_201_CREATED, response_model=UserOut)
 async def handle_register(user: UserRegister):
     try: 
-        arrange_register(user)
-        return { "user_name": user.user_name, "email": user.email }
+        new_user_id = arrange_register(user)
+        return { "user_id": new_user_id }
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
 @router.post("/login", status_code=status.HTTP_200_OK, response_model=UserOut)
 async def handle_login(user: UserLogin):
     try:
-        result_user = arrange_login(user)
-        if not result_user:
-            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
-        return result_user
+        user_id = arrange_login(user)
+        return { "user_id": user_id }
     except HTTPException as http_exc:
         # Re-raise HTTP exceptions to maintain their status codes and details
         raise http_exc
