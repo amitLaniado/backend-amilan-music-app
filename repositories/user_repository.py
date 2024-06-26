@@ -1,6 +1,7 @@
 from database_connection import cursor, connection
-from models import UserRegister, UserLogin, UserOut
+from models import UserRegister, UserLogin, UserOut, PlaylistCreate
 from fastapi import HTTPException, status
+from .playlist_repository import create_playlist
 
 def register(user: UserRegister):
     try:
@@ -12,12 +13,12 @@ def register(user: UserRegister):
         connection.commit()
 
         new_user_id = cursor.fetchone()[0]
+        create_playlist(PlaylistCreate(playlist_name="liked music", user_id=new_user_id))
         return new_user_id
     except Exception as e:
         # Handle the exception here (e.g., log the error, rollback the transaction)
         connection.rollback()
         raise Exception(f"Registration failed: {e}")
-        
 
 def login(user: UserLogin):
     cursor.execute("""
