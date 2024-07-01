@@ -1,22 +1,24 @@
 import psycopg2
-from psycopg2 import sql
+import os
+# from psycopg2 import sql
 
 # Database connection parameters
-host = "localhost"
-port = "5432"
-dbname = "amilan_music_app"
-user = "postgres"
-password = "amit2008"
+db_params = {
+    'dbname': os.getenv('DB_NAME'),
+    'user': os.getenv('DB_USER'),
+    'password': os.getenv('DB_PASSWORD'),
+    'host': os.getenv('DB_HOST'),
+    'port': os.getenv('DB_PORT')
+}
+print(f"db_params = {db_params}")
+
+# database_url = "postgresql://postgres:amit2008@localhost/amilan_music_app"
 
 # Connect to the PostgreSQL database
 try:
-    connection = psycopg2.connect(
-        host=host,
-        port=port,
-        dbname=dbname,
-        user=user,
-        password=password
-    )
+    connection = psycopg2.connect(**db_params)
+
+    # connection = psycopg2.connect(database_url)
     cursor = connection.cursor()
     print("Connected to the database successfully.")
     
