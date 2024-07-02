@@ -12,13 +12,10 @@ db_params = {
 }
 print(f"db_params = {db_params}")
 
-# database_url = "postgresql://postgres:amit2008@localhost/amilan_music_app"
 
 # Connect to the PostgreSQL database
 try:
     connection = psycopg2.connect(**db_params)
-
-    # connection = psycopg2.connect(database_url)
     cursor = connection.cursor()
     print("Connected to the database successfully.")
     

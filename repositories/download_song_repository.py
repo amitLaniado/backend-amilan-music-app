@@ -3,13 +3,21 @@ import tempfile
 from data import ydl_opts
 import os
 
+def find_first_mp3(strings):
+    for string in strings:
+        if string.endswith(".mp3"):
+            return string
+    return None
+
 def get_mp3_content():
     cwd = os.getcwd()
-    songs_directory = f"{cwd}\\songs_downloaded"
+    # songs_directory = f"{cwd}\\songs_downloaded"
+    songs_directory = f"{cwd}/songs_downloaded"
     files = os.listdir(songs_directory)
 
     if len(files) > 0:
-        filename = files[0]
+        # filename = files[0]
+        filename = find_first_mp3(files)
         song_path = os.path.join(songs_directory, filename)
         with open(song_path, 'rb') as mp3_file:
             mp3_content = mp3_file.read()
