@@ -6,9 +6,9 @@ from .playlist_repository import create_playlist
 def register(user: UserRegister):
     try:
         cursor.execute("""
-            INSERT INTO "Users" (user_name, hashed_password, email) 
+            INSERT INTO "Users" (name, hashed_password, email) 
             VALUES (%s, %s, %s)
-            RETURNING user_id;
+            RETURNING id;
         """, (user.user_name, user.password, user.email))
         connection.commit()
 
@@ -22,8 +22,8 @@ def register(user: UserRegister):
 
 def login(user: UserLogin):
     cursor.execute("""
-        SELECT user_id FROM "Users" 
-        WHERE user_name=%s AND hashed_password=%s;
+        SELECT id FROM "Users" 
+        WHERE name=%s AND hashed_password=%s;
     """, (user.user_name, user.password))
 
     try:
