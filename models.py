@@ -48,6 +48,5 @@ class PlaylistIdentifier(BaseModel):
 class SongPlaylistAdd(BaseModel): 
     song_name: str
     channel: str
-    duration: int
     url: str
     playlist_id: int
