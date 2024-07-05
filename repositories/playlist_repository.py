@@ -15,15 +15,14 @@ def get_playlists(user_id: int):
 
 def get_songs_by_playlist_id(playlist_id: int):
     cursor.execute("""
-        SELECT s.name, s.channel, s.url, s.duration
+        SELECT s.name, s.channel, s.url
         FROM "Songs" s
         INNER JOIN "Playlist_Songs" ps ON s.id = ps.song_id
         WHERE ps.playlist_id = %s;
     """, (playlist_id,))
 
     songs = cursor.fetchall()
-    # songs_out = SongsOut(songs=[SongDetails(song_name=song[0], channel=song[1], url=song[2], duration=song[3]) for song in songs])
-    songs_out = SongsOut(songs=[SongDetails(title=song[0], channel=song[1], url=song[2], duration=song[3]) for song in songs])
+    songs_out = SongsOut(songs=[SongDetails(title=song[0], channel=song[1], url=song[2]) for song in songs])
     return songs_out
 
 def create_playlist(playlist: PlaylistCreate):
