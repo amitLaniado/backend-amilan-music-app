@@ -58,9 +58,9 @@ def get_song_id(song_url: str):
 def create_song(songPlaylistAdd: SongPlaylistAdd):
     try:
         cursor.execute("""
-            INSERT INTO "Songs" (song_name, channel, url)
+            INSERT INTO "Songs" (name, channel, url)
             VALUES (%s, %s, %s)
-            RETURNING song_id;
+            RETURNING id;
         """, (songPlaylistAdd.song_name, songPlaylistAdd.channel, songPlaylistAdd.url))
         connection.commit()
 

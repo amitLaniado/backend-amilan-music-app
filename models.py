@@ -23,7 +23,6 @@ class SongDetails(BaseModel):
     title: str
     channel: str
     url: str
-    duration: int
 
 class SongsOut(BaseModel):
     songs: List[SongDetails]
