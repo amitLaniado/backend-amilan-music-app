@@ -1,6 +1,10 @@
 import psycopg2
 import os
-# from psycopg2 import sql
+
+# importing necessary functions from dotenv library
+from dotenv import load_dotenv, dotenv_values 
+# loading variables from .env file
+load_dotenv()
 
 # Database connection parameters
 db_params = {
@@ -12,7 +16,6 @@ db_params = {
 }
 print(f"db_params = {db_params}")
 
-
 # Connect to the PostgreSQL database
 try:
     connection = psycopg2.connect(**db_params)
@@ -21,15 +24,3 @@ try:
     
 except Exception as error:
     print(f"Error connecting to the database: {error}")
-
-# async def get_users():
-#     select_query = 'SELECT * FROM "Users"'
-#     cursor.execute(select_query)
-#     rows = cursor.fetchall()
-#     return rows
-
-# finally:
-#     if connection:
-#         cursor.close()
-#         connection.close()
-#         print("PostgreSQL connection is closed.")
