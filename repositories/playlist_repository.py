@@ -1,4 +1,4 @@
-from models import PlaylistCreate, SongPlaylistAdd, PlaylistsOut, PlaylistDetails, SongsOut, SongDetails
+from models import PlaylistCreate, SongPlaylist, PlaylistsOut, PlaylistDetails, SongsOut, SongDetails
 from database_connection import cursor, connection
 
 # add songs_amount to the playlist
@@ -55,13 +55,13 @@ def get_song_id(song_url: str):
         return None
 
 
-def create_song(songPlaylistAdd: SongPlaylistAdd):
+def create_song(SongPlaylist: SongPlaylist):
     try:
         cursor.execute("""
             INSERT INTO "Songs" (name, channel, url)
             VALUES (%s, %s, %s)
             RETURNING id;
-        """, (songPlaylistAdd.song_name, songPlaylistAdd.channel, songPlaylistAdd.url))
+        """, (SongPlaylist.song_name, SongPlaylist.channel, SongPlaylist.url))
         connection.commit()
 
         new_song_id = cursor.fetchone()[0]
@@ -85,14 +85,29 @@ def create_playlist_song(playlist_id, song_id):
         connection.rollback()
         raise Exception(f"create playlist song failed: {e}")
 
-def update_songs_amount_by_1(playlist_id: int):
+def delete_playlist_song(playlist_id, song_id):
+    try:
+        cursor.execute("""
+            DELETE FROM "Playlist_Songs" 
+            WHERE playlist_id=%s AND song_id=%s
+            RETURNING id;
+        """, (playlist_id, song_id,))
+        connection.commit()
+
+        deleted_playlist_song_id = cursor.fetchone()[0]
+        return deleted_playlist_song_id
+    except Exception as e: 
+        connection.rollback()
+        raise Exception(f"deleted playlist song failed: {e}")
+
+def update_songs_amount(playlist_id: int, increase_amount: int):
     try:
         cursor.execute("""
             UPDATE "Playlists"
-            SET songs_amount = songs_amount + 1
+            SET songs_amount = songs_amount + %s
             WHERE id=%s;
-        """, (playlist_id,))
+        """, (increase_amount, playlist_id,))
         connection.commit()
-    except Exception as e: 
+    except Exception as e:
         connection.rollback()
-        raise Exception(f"create playlist song failed: {e}")
+        raise Exception(f"update songs amount failed: {e}")

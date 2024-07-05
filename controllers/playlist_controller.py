@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, status
-from models import PlaylistCreate, SongPlaylistAdd, PlaylistIdentifier, PlaylistsOut, PlaylistDetails, UserIdentifier, SongsOut
-from services.playlist_service import arrange_create_playlist, arrange_add_song_to_playlist, fetch_playlists, fetch_songs_by_playlist_id
+from models import PlaylistCreate, SongPlaylist, PlaylistIdentifier, PlaylistsOut, PlaylistDetails, UserIdentifier, SongsOut
+from services.playlist_service import arrange_create_playlist, arrange_create_song_to_playlist, arrange_delete_song_to_playlist, fetch_playlists, fetch_songs_by_playlist_id
 
 router = APIRouter(
     prefix="/playlists",
@@ -39,10 +39,18 @@ def handle_create_playlist(playlist: PlaylistCreate):
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
-@router.post("/song", status_code=status.HTTP_201_CREATED)
-def handle_add_song_to_playlist(songPlaylist: SongPlaylistAdd):
+@router.post("/create_song", status_code=status.HTTP_201_CREATED)
+def handle_create_song_to_playlist(songPlaylist: SongPlaylist):
     try: 
-        new_playlist_song_id = arrange_add_song_to_playlist(songPlaylist)
+        new_playlist_song_id = arrange_create_song_to_playlist(songPlaylist)
         return { "playlist_song_id": new_playlist_song_id }
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+
+@router.delete("/delete_song", status_code=status.HTTP_204_NO_CONTENT)
+def handle_delete_song_to_playlist(songPlaylist: SongPlaylist):
+    try: 
+        deleted_playlist_song_id = arrange_delete_song_to_playlist(songPlaylist)
+        return { "playlist_song_id": deleted_playlist_song_id }
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
