@@ -1,0 +1,28 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+     - DB_NAME=amilan
+     - DB_USER=laniado
+     - DB_PASSWORD=amit2008
+     - DB_HOST=db
+     - DB_PORT=5432
+  
+  db:
+    image: postgres:latest
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: laniado
+      POSTGRES_PASSWORD: amit2008
+      POSTGRES_DB: amilan
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+
+volumes:
+  postgres_data: {}
