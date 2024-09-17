@@ -22,7 +22,8 @@ services:
       POSTGRES_PASSWORD: amit2008
       POSTGRES_DB: amilan
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
+      - /mnt/docker_volumes/postgres_data:/var/lib/postgresql/data/
+      # - postgres_data: /var/lib/postgresql/data/
 
 volumes:
   postgres_data: {}
