@@ -9,11 +9,12 @@ def register(user: UserRegister):
             INSERT INTO "Users" (name, hashed_password, email) 
             VALUES (%s, %s, %s)
             RETURNING id;
-        """, (user.user_name, user.password, user.email))
+        """, (user.name, user.password, user.email))
         connection.commit()
 
         new_user_id = cursor.fetchone()[0]
-        create_playlist(PlaylistCreate(playlist_name="liked music", user_id=new_user_id))
+        print(f"new_user_id: {new_user_id} {type(new_user_id)}")
+        create_playlist(PlaylistCreate(name="liked music", user_id=new_user_id))
         return new_user_id
     except Exception as e:
         # Handle the exception here (e.g., log the error, rollback the transaction)
@@ -24,7 +25,7 @@ def login(user: UserLogin):
     cursor.execute("""
         SELECT id FROM "Users" 
         WHERE name=%s AND hashed_password=%s;
-    """, (user.user_name, user.password))
+    """, (user.name, user.password))
 
     try:
         user_id = cursor.fetchone()[0]

@@ -11,20 +11,26 @@ def find_first_mp3(strings):
 
 def get_mp3_content():
     cwd = os.getcwd()
-    # songs_directory = f"{cwd}\\songs_downloaded"
     songs_directory = f"{cwd}/songs_downloaded"
     files = os.listdir(songs_directory)
 
-    if len(files) > 0:
-        # filename = files[0]
-        filename = find_first_mp3(files)
-        song_path = os.path.join(songs_directory, filename)
+    # Find the first .mp3 file
+    filename = find_first_mp3(files)
+
+    if filename is None:
+        print(f"No .mp3 file found in the directory. Files in the directory: {files}")
+        return None
+
+    song_path = os.path.join(songs_directory, filename)
+    print(f"song_path = {song_path}")
+
+    try:
         with open(song_path, 'rb') as mp3_file:
             mp3_content = mp3_file.read()
-        os.remove(song_path)
+        os.remove(song_path)  # Remove the file after reading it
         return mp3_content
-    else:
-        print("No files found in the directory.")
+    except Exception as e:
+        print(f"Error reading or removing the file: {e}")
         return None
 
 async def download_song(song_url):

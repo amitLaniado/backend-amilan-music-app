@@ -14,8 +14,3 @@ def hash_password(password: str) -> str:
     password_hash = sha256.hexdigest()
     
     return password_hash
-
-# Example usage
-password = "my_secure_password"
-hashed_password = hash_password(password)
-print(f"The SHA-256 hash of the password is: {hashed_password}")

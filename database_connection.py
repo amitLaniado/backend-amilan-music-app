@@ -13,7 +13,6 @@ db_params = {
     'host': os.getenv('DB_HOST'),
     'port': os.getenv('DB_PORT')
 }
-print(f"db_params = {db_params}")
 
 # Connect to the PostgreSQL database
 try:

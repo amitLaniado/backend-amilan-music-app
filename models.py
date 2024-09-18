@@ -2,12 +2,12 @@ from typing import List
 from pydantic import BaseModel, EmailStr
 
 class UserRegister(BaseModel):
-    user_name: str
+    name: str
     email: EmailStr
     password: str
 
 class UserLogin(BaseModel):
-    user_name: str
+    name: str
     password: str
 
 class UserOut(BaseModel):
@@ -16,7 +16,7 @@ class UserOut(BaseModel):
     # email: EmailStr
 
 class UserIdentifier(BaseModel): 
-    user_id: int
+    id: int
 
 class SongDetails(BaseModel):
     # song_name: str
@@ -28,19 +28,19 @@ class SongsOut(BaseModel):
     songs: List[SongDetails]
 
 class PlaylistDetails(BaseModel):
-    playlist_id: int
-    playlist_name: str
+    id: int
+    name: str
     songs_amount: int
 
 class PlaylistsOut(BaseModel):
     playlists: List[PlaylistDetails]
 
 class PlaylistCreate(BaseModel):
-    playlist_name: str
+    name: str
     user_id: int
 
 class PlaylistIdentifier(BaseModel):
-    playlist_id: int
+    id: int
     # playlist_name: str
     # user_id: int
 

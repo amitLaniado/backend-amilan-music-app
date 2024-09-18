@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException, status
+from pydantic import ValidationError
 from models import UserRegister, UserLogin, UserOut
 from services.user_service import arrange_register, arrange_login
 
@@ -16,8 +17,11 @@ router = APIRouter(
 @router.post("/register", status_code=status.HTTP_201_CREATED, response_model=UserOut)
 async def handle_register(user: UserRegister):
     try: 
+        print(f"user: {user}")
         new_user_id = arrange_register(user)
         return { "user_id": new_user_id }
+    except ValidationError as ve:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=ve.errors())
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 

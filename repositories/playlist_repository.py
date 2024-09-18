@@ -10,14 +10,15 @@ def get_playlists(user_id: int):
     """, (user_id,))
 
     playlists = cursor.fetchall() # array of tuple that have playlist_id, playlist_name
-    playlists_out = PlaylistsOut(playlists=[PlaylistDetails(playlist_id=row[0], playlist_name=row[1], songs_amount=row[2]) for row in playlists])
+    playlists_out = PlaylistsOut(playlists=[PlaylistDetails(id=row[0], name=row[1], songs_amount=row[2]) for row in playlists])
     return playlists_out
 
 def get_songs_by_playlist_id(playlist_id: int):
+    print(f"playlist_id: {playlist_id}")
     cursor.execute("""
         SELECT s.name, s.channel, s.url
         FROM "Songs" s
-        INNER JOIN "Playlist_Songs" ps ON s.id = ps.song_id
+        INNER JOIN "Playlist_songs" ps ON s.id = ps.song_id
         WHERE ps.playlist_id = %s;
     """, (playlist_id,))
 
@@ -31,7 +32,7 @@ def create_playlist(playlist: PlaylistCreate):
             INSERT INTO "Playlists" (name, user_id)
             VALUES (%s, %s)
             RETURNING id;
-        """, (playlist.playlist_name, playlist.user_id))
+        """, (playlist.name, playlist.user_id))
         connection.commit()
 
         new_playlist_id = cursor.fetchone()[0]
@@ -72,7 +73,7 @@ def create_song(SongPlaylist: SongPlaylist):
 def create_playlist_song(playlist_id, song_id):
     try:
         cursor.execute("""
-            INSERT INTO "Playlist_Songs" (playlist_id, song_id)
+            INSERT INTO "Playlist_songs" (playlist_id, song_id)
             VALUES (%s, %s)
             RETURNING id;
         """, (playlist_id, song_id))
@@ -87,7 +88,7 @@ def create_playlist_song(playlist_id, song_id):
 def delete_playlist_song(playlist_id, song_id):
     try:
         cursor.execute("""
-            DELETE FROM "Playlist_Songs" 
+            DELETE FROM "Playlist_songs" 
             WHERE playlist_id=%s AND song_id=%s
             RETURNING id;
         """, (playlist_id, song_id,))
